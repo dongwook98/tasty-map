@@ -2,21 +2,17 @@ import { Dispatch, SetStateAction, useEffect } from 'react';
 
 interface MarkerProps {
   map: any;
-  storeDatas: any[];
+  stores: any[];
   setCurrentStore: Dispatch<SetStateAction<any>>;
 }
 /**
  * 카카오 지도 상태와 가게 데이터를 받아서 마커를 표시하는 컴포넌트
  */
-export default function Markers({
-  map,
-  storeDatas,
-  setCurrentStore,
-}: MarkerProps) {
+export default function Markers({ map, stores, setCurrentStore }: MarkerProps) {
   const loadKakaoMarkers = () => {
     if (map) {
       // 식당 데이터 마커 띄우기
-      storeDatas?.map((store) => {
+      stores?.map((store) => {
         // 커스텀 마커 이미지 주소 설정
         const imageSrc = store?.bizcnd_code_nm
           ? `/images/markers/${store?.bizcnd_code_nm}.png`
