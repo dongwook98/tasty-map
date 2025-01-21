@@ -3,6 +3,9 @@ import Link from 'next/link';
 import { BiMenu } from 'react-icons/bi';
 import { AiOutlineClose } from 'react-icons/ai';
 
+/**
+ * 모든 페이지에 최상단에 위치하는 Navigation 컴포넌트
+ */
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
