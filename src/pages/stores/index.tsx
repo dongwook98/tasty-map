@@ -2,8 +2,6 @@ import { StoreType } from '@/interface';
 import Image from 'next/image';
 
 export default function StoreListPage({ stores }: { stores: StoreType[] }) {
-  console.log(stores);
-
   return (
     <div className='px-4 md:max-w-4xl mx-auto py-8'>
       <ul role='list' className='divide-y divide-gray-300'>
@@ -45,6 +43,7 @@ export default function StoreListPage({ stores }: { stores: StoreType[] }) {
   );
 }
 
+// getServerSideProps: 요청시 매번 데이터 페칭
 export async function getServerSideProps() {
   const stores = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/stores`
