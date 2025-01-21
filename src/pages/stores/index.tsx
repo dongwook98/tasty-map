@@ -1,5 +1,6 @@
-import { StoreType } from '@/interface';
 import Image from 'next/image';
+
+import { StoreType } from '@/interface';
 
 export default function StoreListPage({ stores }: { stores: StoreType[] }) {
   return (
@@ -10,8 +11,8 @@ export default function StoreListPage({ stores }: { stores: StoreType[] }) {
             <div className='flex gap-x-4'>
               <Image
                 src={
-                  store?.bizcnd_code_nm
-                    ? `/images/markers/${store.bizcnd_code_nm}.png`
+                  store?.category
+                    ? `/images/markers/${store.category}.png`
                     : '/images/markers/default.png'
                 }
                 width={48}
@@ -20,19 +21,19 @@ export default function StoreListPage({ stores }: { stores: StoreType[] }) {
               />
               <div>
                 <div className='text-sm font-semibold leading-9 text-gray-900'>
-                  {store.upso_nm}
+                  {store.name}
                 </div>
                 <div className='mt-1 text-xs truncate leading-5 text-gray-500'>
-                  {store.upso_nm}
+                  {store.storeType}
                 </div>
               </div>
               <div className='hidden sm:flex sm:flex-col sm:items-end'>
                 <div className='text-sm font-semibold leading-9 text-gray-900'>
-                  {store.rdn_code_nm}
+                  {store.address}
                 </div>
                 <div className='mt-1 text-xs truncate leading-5 text-gray-500'>
-                  {store.tel_no ?? '번호없음'} | {store.crtfc_gbn_nm} |{' '}
-                  {store.bizcnd_code_nm}
+                  {store.phone ?? '번호없음'} | {store.foodCertifyName} |{' '}
+                  {store.category}
                 </div>
               </div>
             </div>
