@@ -2,23 +2,26 @@ import Image from 'next/image';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 
-import { StoreType } from '@/interface';
+import { StoreApiResponse } from '@/interface';
 import ListLoading from '@/components/ListLoading';
+import { useRouter } from 'next/router';
+import Pagination from '@/components/Pagination';
 
 export default function StoreListPage() {
-  const {
-    isLoading,
-    isError,
-    data: stores,
-  } = useQuery({
-    queryKey: ['stores'],
+  const router = useRouter();
+  const { page = '1' }: any = router.query;
+
+  const { isLoading, isError, data } = useQuery<StoreApiResponse>({
+    queryKey: [`stores-${page}`],
     queryFn: async () => {
       const { data } = await axios(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/stores`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/stores?page=${page}`
       );
-      return data as StoreType[];
+      return data;
     },
   });
+
+  console.log(data);
 
   if (isError) {
     return (
@@ -34,7 +37,7 @@ export default function StoreListPage() {
         {isLoading ? (
           <ListLoading />
         ) : (
-          stores?.map((store, index) => (
+          data?.data.map((store, index) => (
             <li className='flex justify-between gap-x-6 py-5' key={index}>
               <div className='flex gap-x-4'>
                 <Image
@@ -69,6 +72,9 @@ export default function StoreListPage() {
           ))
         )}
       </ul>
+      {data?.totalPage && (
+        <Pagination totalPageCount={data.totalCount} currentPage={page} />
+      )}
     </div>
   );
 }
