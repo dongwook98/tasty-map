@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
+import { useSession, signOut } from 'next-auth/react';
 import { BiMenu } from 'react-icons/bi';
 import { AiOutlineClose } from 'react-icons/ai';
 
@@ -8,6 +9,7 @@ import { AiOutlineClose } from 'react-icons/ai';
  */
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { data, status } = useSession();
 
   return (
     <>
@@ -40,21 +42,15 @@ export default function Navbar() {
           >
             마이페이지
           </Link>
-          {/* {status === 'authenticated' ? (
-            <button type='button' onClick={() => {}}>
+          {status === 'authenticated' ? (
+            <button type='button' onClick={() => signOut()}>
               로그아웃
             </button>
           ) : (
             <Link href='/api/auth/signin' className='navbar__list--item'>
               로그인
             </Link>
-          )} */}
-          <Link
-            href='/api/auth/signin'
-            className='cursor-pointer hover:text-gray-600'
-          >
-            로그인
-          </Link>
+          )}
         </div>
 
         {/* mobile button */}
