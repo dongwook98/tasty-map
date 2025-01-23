@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect } from 'react';
 
 import { StoreType } from '@/interface';
 
-interface MarkerProps {
+interface MarkersProps {
   map: any;
   stores: StoreType[];
   setCurrentStore: Dispatch<SetStateAction<any>>;
@@ -10,17 +10,23 @@ interface MarkerProps {
 /**
  * 카카오 지도 상태와 가게 데이터를 받아서 마커를 표시하는 컴포넌트
  */
-export default function Markers({ map, stores, setCurrentStore }: MarkerProps) {
+export default function Markers({
+  map,
+  stores,
+  setCurrentStore,
+}: MarkersProps) {
   const loadKakaoMarkers = () => {
     if (map) {
-      // 식당 데이터 마커 띄우기
+      // 식당 데이터 마커들 띄우기
       stores?.map((store) => {
         // 커스텀 마커 이미지 주소 설정
         const imageSrc = store?.category
           ? `/images/markers/${store?.category}.png`
           : '/images/markers/default.png';
+
         // 커스텀 마커 이미지 크기 설정
         const imageSize = new window.kakao.maps.Size(40, 40);
+
         // 마커이미지의 옵션, 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정
         const imageOption = { offset: new window.kakao.maps.Point(27, 69) };
 

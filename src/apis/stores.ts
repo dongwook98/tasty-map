@@ -9,3 +9,9 @@ export const fetchStores = async (pageParam: number) => {
 
   return data;
 };
+
+export const fetchStoreDetail = async (id: string) => {
+  const { data } = await axios(`/api/stores?id=${id}`);
+
+  return data;
+};
