@@ -1,6 +1,8 @@
-import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useRef } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { useRecoilValue } from 'recoil';
 
+import { searchState } from '@/atom';
 import { StoreType } from '@/interface';
 import ListLoading from '@/components/ListLoading';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
@@ -11,15 +13,14 @@ import SearchFilter from '@/components/SearchFilter';
 import Link from 'next/link';
 
 export default function StoreListPage() {
-  const [q, setQ] = useState<string>();
-  const [district, setDistrict] = useState<string>();
+  const search = useRecoilValue(searchState);
   const ref = useRef<HTMLDivElement>(null);
   const pageRef = useIntersectionObserver(ref, {});
   const isPageEnd = pageRef?.isIntersecting;
 
   const searchParams = {
-    q,
-    district,
+    q: search?.q,
+    district: search?.district,
   };
 
   const {
@@ -67,7 +68,7 @@ export default function StoreListPage() {
 
   return (
     <div className='px-4 md:max-w-4xl mx-auto py-8'>
-      <SearchFilter setQ={setQ} setDistrict={setDistrict} />
+      <SearchFilter />
       <ul role='list' className='divide-y divide-gray-300'>
         {isLoading ? (
           <ListLoading />
