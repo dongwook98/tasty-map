@@ -8,6 +8,7 @@ import Loader from '@/components/Loader';
 import { fetchStores } from '@/apis/stores';
 import StoreItem from '@/components/StoreItem';
 import SearchFilter from '@/components/SearchFilter';
+import Link from 'next/link';
 
 export default function StoreListPage() {
   const [q, setQ] = useState<string>();
@@ -74,7 +75,9 @@ export default function StoreListPage() {
           stores?.pages.map((page, index) => (
             <Fragment key={index}>
               {page.data.map((store: StoreType) => (
-                <StoreItem store={store} key={store.id} />
+                <Link href={`/stores/${store.id}`} key={store.id}>
+                  <StoreItem store={store} />
+                </Link>
               ))}
             </Fragment>
           ))
