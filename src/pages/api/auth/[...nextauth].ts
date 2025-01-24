@@ -1,11 +1,10 @@
 import NextAuth from 'next-auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import { PrismaClient } from '@prisma/client';
 import GoogleProvider from 'next-auth/providers/google';
 import NaverProvider from 'next-auth/providers/naver';
 import KakaoProvier from 'next-auth/providers/kakao';
 
-const prisma = new PrismaClient();
+import prisma from '@/lib/prisma';
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma), // PrismaAdapter가 prisma에 맞게 데이터 생성

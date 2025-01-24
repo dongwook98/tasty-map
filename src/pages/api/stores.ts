@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { PrismaClient } from '@prisma/client';
 
+import prisma from '@/lib/prisma';
 import { StoreApiResponse, StoreType } from '@/interface';
 
 interface RequestQueryType {
@@ -15,7 +15,6 @@ export default async function handler(
   res: NextApiResponse<StoreApiResponse | StoreType[] | StoreType>
 ) {
   const { page = '', limit = '', q, district }: RequestQueryType = req.query;
-  const prisma = new PrismaClient();
 
   if (page) {
     const count = await prisma.store.count();
