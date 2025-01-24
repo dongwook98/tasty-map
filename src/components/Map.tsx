@@ -1,7 +1,9 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 /*global kakao*/
 
 import Script from 'next/script';
-import { Dispatch, SetStateAction } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { locationState, mapState } from '@/atom';
 
 declare global {
   interface Window {
@@ -10,31 +12,29 @@ declare global {
   }
 }
 
-const DEFAULT_LAT = 37.497625203;
-const DEFAULT_LNG = 127.03088379;
-const DEFAULT_ZOOM = 3;
-
 interface MapProps {
-  setMap: Dispatch<SetStateAction<any>>;
-  lat: number;
-  lng: number;
-  zoom: number;
+  lat?: number;
+  lng?: number;
+  zoom?: number;
 }
 
 /**
  * 카카오 지도 API를 사용해 카카오 지도를 표시하는 컴포넌트
  * @returns 카카오 지도 Script, 지도 영역
  */
-export default function Map({ setMap, lat, lng, zoom }: MapProps) {
+export default function Map({ lat, lng, zoom }: MapProps) {
+  const setMap = useSetRecoilState(mapState);
+  const location = useRecoilValue(locationState);
+
   const loadKaKaoMap = () => {
     window.kakao.maps.load(() => {
       const mapContainer = document.getElementById('map');
       const mapOption = {
         center: new window.kakao.maps.LatLng(
-          lat ?? DEFAULT_LAT,
-          lng ?? DEFAULT_LNG
+          lat ?? location.lat,
+          lng ?? location.lng
         ),
-        level: zoom ?? DEFAULT_ZOOM,
+        level: zoom ?? location.zoom,
       };
 
       const map = new window.kakao.maps.Map(mapContainer, mapOption);

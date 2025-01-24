@@ -7,13 +7,12 @@ import StoreBox from '@/components/StoreBox';
 import { StoreType } from '@/interface';
 
 export default function Home({ stores }: { stores: StoreType[] }) {
-  const [map, setMap] = useState(null);
   const [currentStore, setCurrentStore] = useState(null);
 
   return (
     <>
-      <Map setMap={setMap} />
-      <Markers stores={stores} map={map} setCurrentStore={setCurrentStore} />
+      <Map />
+      <Markers stores={stores} />
       <StoreBox store={currentStore} setStore={setCurrentStore} />
     </>
   );

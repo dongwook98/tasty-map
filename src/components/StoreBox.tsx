@@ -1,6 +1,6 @@
-import { Dispatch, SetStateAction } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import { useRecoilState } from 'recoil';
 import {
   AiOutlineClose,
   AiOutlineInfoCircle,
@@ -9,17 +9,13 @@ import {
 } from 'react-icons/ai';
 import { HiOutlineMapPin } from 'react-icons/hi2';
 
-import { StoreType } from '@/interface';
-
-interface StoreBoxProps {
-  store: StoreType | null;
-  setStore: Dispatch<SetStateAction<any>>;
-}
+import { currentStoreState } from '@/atom';
 
 /**
  * 사용자가 클릭한 가게 정보를 박스형태로 간단하게 표시해주는 컴포넌트
  */
-export default function StoreBox({ store, setStore }: StoreBoxProps) {
+export default function StoreBox() {
+  const [store, setStore] = useRecoilState(currentStoreState);
   const router = useRouter();
 
   return (

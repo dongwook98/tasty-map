@@ -1,15 +1,18 @@
 import { useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
 
+import { mapState } from '@/atom';
 import { StoreType } from '@/interface';
 
 interface MarkerProps {
-  map: any;
   store: StoreType;
 }
+
 /**
  * 카카오 지도 상태와 가게 데이터를 받아서 마커 한개를 표시하는 컴포넌트
  */
-export default function Marker({ map, store }: MarkerProps) {
+export default function Marker({ store }: MarkerProps) {
+  const map = useRecoilValue(mapState);
   const loadKakaoMarker = () => {
     if (map && store) {
       // 식당 데이터 마커 하나 띄우기
