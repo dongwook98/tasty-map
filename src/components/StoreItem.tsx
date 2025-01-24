@@ -4,7 +4,7 @@ import { StoreType } from '@/interface';
 
 export default function StoreItem({ store }: { store: StoreType }) {
   return (
-    <li className='flex justify-between gap-x-6 py-5'>
+    <li className='flex justify-between gap-x-6 py-5 hover:bg-gray-50'>
       <div className='flex gap-x-4'>
         <Image
           src={
