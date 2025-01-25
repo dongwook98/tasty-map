@@ -1,4 +1,5 @@
 import { Fragment, useCallback, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useRecoilValue } from 'recoil';
 
@@ -10,7 +11,6 @@ import Loader from '@/components/Loader';
 import { fetchStores } from '@/apis/stores';
 import StoreItem from '@/components/StoreItem';
 import SearchFilter from '@/components/SearchFilter';
-import Link from 'next/link';
 
 export default function StoreListPage() {
   const search = useRecoilValue(searchState);

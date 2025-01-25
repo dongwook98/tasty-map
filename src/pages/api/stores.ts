@@ -16,6 +16,16 @@ export default async function handler(
 ) {
   const { page = '', limit = '', q, district }: RequestQueryType = req.query;
 
+  if (req.method === 'POST') {
+    const data = req.body;
+    const result = await prisma.store.create({
+      data: { ...data },
+    });
+
+    return res.status(200).json(result);
+  }
+
+  // GET 요청 처리
   if (page) {
     const count = await prisma.store.count();
     const skipPage = parseInt(page) - 1;
