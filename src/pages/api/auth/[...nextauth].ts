@@ -7,6 +7,11 @@ import KakaoProvier from 'next-auth/providers/kakao';
 import prisma from '@/lib/prisma';
 
 export const authOptions = {
+  session: {
+    strategy: 'jwt' as const,
+    maxAge: 60 * 60 * 24,
+    updateAge: 60 * 60 * 2,
+  },
   adapter: PrismaAdapter(prisma), // PrismaAdapter가 prisma에 맞게 데이터 생성
   providers: [
     GoogleProvider({
