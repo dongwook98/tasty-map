@@ -1,10 +1,11 @@
-import { CATEGORY_ARR, FOOD_CERTIFY_ARR, STORE_TYPE_ARR } from '@/data/store';
-import axios from 'axios';
+import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/router';
+
+import { CATEGORY_ARR, FOOD_CERTIFY_ARR, STORE_TYPE_ARR } from '@/data/store';
 import AddressSearch from '@/components/AddressSearch';
 import { StoreType } from '@/interface';
+import { createStore } from '@/apis/stores';
 
 export default function StoreNewPage() {
   const router = useRouter();
@@ -20,17 +21,16 @@ export default function StoreNewPage() {
       className='px-4 md:max-w-4xl mx-auto py-8'
       onSubmit={handleSubmit(async (data) => {
         try {
-          const result = await axios.post('/api/stores', data);
-
+          const result = await createStore(data);
           if (result.status === 200) {
             toast.success('맛집을 등록했습니다.');
             router.replace(`/stores/${result.data.id}`);
           } else {
-            toast.error('다시 시도해주세요.');
+            toast.error('서버 에러.. 잠시 후 다시 시도해주세요.');
           }
         } catch (error) {
           console.error(error);
-          toast.error('데이터 생성중 문제가 생겼습니다. 다시 시도해주세요.');
+          toast.error('네트워크 에러.. 잠시 후 다시 시도해주세요.');
         }
       })}
     >

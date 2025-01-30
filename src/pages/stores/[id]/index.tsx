@@ -2,8 +2,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
+import { toast } from 'react-toastify';
 
-import { fetchStoreDetail } from '@/apis/stores';
+import { deleteStore, fetchStoreDetail } from '@/apis/stores';
 import Loader from '@/components/Loader';
 import Map from '@/components/Map';
 import Marker from '@/components/Marker';
@@ -12,7 +13,6 @@ export default function StoreDetailPage() {
   const router = useRouter();
   const { id } = router.query;
   const { status } = useSession();
-  console.log(status);
 
   const {
     data: store,
@@ -25,6 +25,25 @@ export default function StoreDetailPage() {
     enabled: !!id,
     refetchOnWindowFocus: false,
   });
+
+  const handleDelete = async () => {
+    const confirm = window.confirm('해당 맛집을 삭제하시겠습니까?');
+
+    if (confirm) {
+      try {
+        const result = await deleteStore(id as string);
+        if (result.status === 200) {
+          toast.success('가게를 삭제했습니다.');
+          router.replace('/');
+        } else {
+          toast.error('서버 에러.. 다시 시도해주세요.');
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error('네트워크 에러.. 잠시 후 다시 시도해주세요.');
+      }
+    }
+  };
 
   if (isError) {
     return (
@@ -50,20 +69,23 @@ export default function StoreDetailPage() {
               {store?.address}
             </p>
           </div>
-          <div className='flex items-center gap-4'>
-            <Link
-              href={`/stores/${store?.id}/edit`}
-              className='underline hover:text-gray-400 text-sm'
-            >
-              수정
-            </Link>
-            <button
-              type='button'
-              className='underline hover:text-gray-400 text-sm'
-            >
-              삭제
-            </button>
-          </div>
+          {status === 'authenticated' && (
+            <div className='flex items-center gap-4 px-4 py-3'>
+              <Link
+                href={`/stores/${store?.id}/edit`}
+                className='underline hover:text-gray-400 text-sm'
+              >
+                수정
+              </Link>
+              <button
+                type='button'
+                onClick={handleDelete}
+                className='underline hover:text-gray-400 text-sm'
+              >
+                삭제
+              </button>
+            </div>
+          )}
         </div>
 
         <div className='mt-6 border-t border-gray-100'>

@@ -29,3 +29,21 @@ export const fetchStoreDetail: (storeId: string) => Promise<StoreType> = async (
 
   return data;
 };
+
+export const createStore = async (data: StoreType) => {
+  const result = await axios.post('/api/stores', data);
+
+  return result;
+};
+
+export const updateStore = async (data: StoreType) => {
+  const result = await axios.put('/api/stores', data);
+
+  return result;
+};
+
+export const deleteStore = async (id: string) => {
+  const result = await axios.delete(`/api/stores?id=${id}`);
+
+  return result;
+};
