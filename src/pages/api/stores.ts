@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import axios from 'axios';
 
 import prisma from '@/lib/prisma';
 import { StoreApiResponse, StoreType } from '@/interface';
-import axios from 'axios';
 
 interface RequestQueryType {
   page?: string;
@@ -13,7 +13,7 @@ interface RequestQueryType {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<StoreApiResponse | StoreType[] | StoreType | null>
+  res: NextApiResponse<StoreApiResponse | StoreType[] | StoreType>
 ) {
   const { page = '', limit = '', q, district }: RequestQueryType = req.query;
 
@@ -33,7 +33,31 @@ export default async function handler(
     );
 
     const result = await prisma.store.create({
-      data: { ...formData, lat: data.documents[0].x, lng: data.documents[0].y },
+      data: { ...formData, lat: data.documents[0].y, lng: data.documents[0].x },
+    });
+
+    return res.status(200).json(result);
+  }
+
+  if (req.method === 'PUT') {
+    const formData = req.body;
+
+    const { data } = await axios.get(
+      `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURI(
+        formData.address
+      )}`,
+      {
+        headers: {
+          Authorization: `KakaoAK ${process.env.KAKAO_CLIENT_ID}`,
+        },
+      }
+    );
+
+    const result = await prisma.store.update({
+      where: {
+        id: formData.id,
+      },
+      data: { ...formData, lat: data.documents[0].y, lng: data.documents[0].x },
     });
 
     return res.status(200).json(result);

@@ -28,6 +28,7 @@ export interface StoreType {
    * 업종명
    */
   storeType?: string | null;
+  // 식품인증 구분
   foodCertifyName?: string | null;
 }
 

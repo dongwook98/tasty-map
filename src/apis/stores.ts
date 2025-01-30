@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import { StoreType } from '@/interface';
+
 interface searchParamsType {
   q?: string;
   district?: string;
@@ -20,8 +22,10 @@ export const fetchStores = async (
   return data;
 };
 
-export const fetchStoreDetail = async (id: string) => {
-  const { data } = await axios(`/api/stores?id=${id}`);
+export const fetchStoreDetail: (storeId: string) => Promise<StoreType> = async (
+  storeId: string
+) => {
+  const { data } = await axios(`/api/stores?id=${storeId}`);
 
   return data;
 };

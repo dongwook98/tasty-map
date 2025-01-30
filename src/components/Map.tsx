@@ -13,8 +13,8 @@ declare global {
 }
 
 interface MapProps {
-  lat?: number;
-  lng?: number;
+  lat?: string | null;
+  lng?: string | null;
   zoom?: number;
 }
 
