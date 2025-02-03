@@ -30,6 +30,20 @@ export interface StoreType {
   storeType?: string | null;
   // 식품인증 구분
   foodCertifyName?: string | null;
+  likes?: LikeInterface[];
+}
+
+export interface LikeInterface {
+  id: number;
+  storeId: number;
+  userId: number;
+  store?: StoreType;
+}
+
+export interface LikeApiResponse {
+  data: LikeInterface[];
+  totalPage: number;
+  page: number;
 }
 
 export interface StoreApiResponse {

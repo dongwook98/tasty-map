@@ -1,5 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
+import { getServerSession } from 'next-auth';
+import { authOptions } from './auth/[...nextauth]';
 
 import prisma from '@/lib/prisma';
 import { StoreApiResponse, StoreType } from '@/interface';
@@ -23,6 +25,7 @@ export default async function handler(
     district,
     id,
   }: RequestQueryType = req.query;
+  const session = await getServerSession(req, res, authOptions);
 
   if (req.method === 'POST') {
     const formData = req.body;
@@ -110,6 +113,11 @@ export default async function handler(
       orderBy: { id: 'asc' },
       where: {
         id: id ? parseInt(id) : {},
+      },
+      include: {
+        likes: {
+          where: session ? { userId: session.user.id } : {},
+        },
       },
     });
     res.status(200).json(id ? stores[0] : stores);
