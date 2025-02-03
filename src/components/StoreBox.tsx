@@ -10,6 +10,7 @@ import {
 import { HiOutlineMapPin } from 'react-icons/hi2';
 
 import { currentStoreState } from '@/atom';
+import Like from './Like';
 
 /**
  * 사용자가 클릭한 가게 정보를 박스형태로 간단하게 표시해주는 컴포넌트
@@ -44,9 +45,12 @@ export default function StoreBox() {
                 <AiOutlineClose />
               </button>
             </div>
-            <div className='mt-4 flex gap-2 items-center'>
-              <HiOutlineMapPin />
-              {store?.address}
+            <div className='flex justify-between gap-4'>
+              <div className='mt-4 flex gap-2 items-center col-span-3'>
+                <HiOutlineMapPin />
+                {store?.address}
+              </div>
+              <Like storeId={store.id} />
             </div>
             <div className='mt-2 flex gap-2 items-center'>
               <AiOutlinePhone />

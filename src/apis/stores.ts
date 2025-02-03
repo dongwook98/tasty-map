@@ -22,8 +22,8 @@ export const fetchStores = async (
   return data;
 };
 
-export const fetchStoreDetail: (storeId: string) => Promise<StoreType> = async (
-  storeId: string
+export const fetchStoreDetail: (storeId: number) => Promise<StoreType> = async (
+  storeId
 ) => {
   const { data } = await axios(`/api/stores?id=${storeId}`);
 
