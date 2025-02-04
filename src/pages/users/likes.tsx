@@ -1,10 +1,11 @@
+import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import axios from 'axios';
 
 import ListLoading from '@/components/ListLoading';
 import StoreItem from '@/components/StoreItem';
 import { LikeApiResponse, LikeInterface } from '@/interface';
-import { useRouter } from 'next/router';
 import Pagination from '@/components/Pagination';
 
 export default function LikesPage() {
@@ -42,7 +43,9 @@ export default function LikesPage() {
           <ListLoading />
         ) : (
           likes?.data.map((like: LikeInterface, index) => (
-            <StoreItem store={like.store} key={index} />
+            <Link href={`/stores/${like.storeId}`} key={index}>
+              <StoreItem store={like.store} />
+            </Link>
           ))
         )}
       </ul>
