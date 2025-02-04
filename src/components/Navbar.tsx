@@ -47,7 +47,10 @@ export default function Navbar() {
               로그아웃
             </button>
           ) : (
-            <Link href='/api/auth/signin' className='navbar__list--item'>
+            <Link
+              href='/api/auth/signin'
+              className='cursor-pointer hover:text-gray-600'
+            >
               로그인
             </Link>
           )}
@@ -65,7 +68,7 @@ export default function Navbar() {
 
       {/* mobile navbar */}
       {isOpen && (
-        <div className='fixed w-full text-white h-screen top-[52px] bg-blue-800'>
+        <div className='fixed w-full text-white h-screen top-[52px] bg-blue-800 z-[100]'>
           <div className='flex flex-col gap-4 px-[18px] py-6'>
             <Link
               href='/stores'
@@ -95,10 +98,11 @@ export default function Navbar() {
             >
               마이페이지
             </Link>
-            {/* {status === 'authenticated' ? (
+            {status === 'authenticated' ? (
               <button
                 type='button'
                 onClick={() => {
+                  signOut();
                   setIsOpen(false);
                 }}
                 className='cursor-pointer hover:text-gray-600 text-left'
@@ -113,14 +117,7 @@ export default function Navbar() {
               >
                 로그인
               </Link>
-            )} */}
-            <Link
-              href='/api/auth/signin'
-              className='cursor-pointer hover:text-gray-600'
-              onClick={() => setIsOpen(false)}
-            >
-              로그인
-            </Link>
+            )}
           </div>
         </div>
       )}
