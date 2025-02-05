@@ -13,7 +13,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className='flex justify-between items-center fixed w-full h-[52px] top-0 shadow-sm bg-white'>
+      <div className='flex justify-between items-center fixed w-full h-[52px] top-0 shadow-sm bg-white z-[100]'>
         <Link
           className='text-blue-800 text-lg font-semibold cursor-pointer px-[18px] py-0'
           href='/'
