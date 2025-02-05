@@ -12,7 +12,7 @@ interface LikeProps {
 }
 
 export default function Like({ storeId }: LikeProps) {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const { data: store, refetch } = useQuery<StoreType>({
     queryKey: [`like-store-${storeId}`],
@@ -29,22 +29,24 @@ export default function Like({ storeId }: LikeProps) {
           storeId: store.id,
         });
         if (res.status === 201) {
-          toast.success('가게를 찜했습니다.');
+          toast.success('해당 맛집 좋아요 했습니다.');
         } else {
-          toast.warn('찜을 취소했습니다.');
+          toast.warn('해당 맛집 좋아요를 취소했습니다.');
         }
         refetch();
       } catch (error) {
         console.error(error);
         toast.error('네트워크 에러.. 잠시 후 다시 시도해주세요.');
       }
+    } else if (status === 'unauthenticated') {
+      toast.warn('로그인 후 이용해주세요.');
     }
   };
 
   return (
     <button type='button' onClick={toggleLike}>
       {/* 로그인된 사용자가 좋아요를 눌렀다면? */}
-      {store && store.likes.length > 0 ? (
+      {status === 'authenticated' && store?.likes?.length ? (
         <AiFillHeart className='hover:text-red-600 focus:text-red-600 text-red-500' />
       ) : (
         <AiOutlineHeart className='hover:text-red-600 focus:text-red-600' />
