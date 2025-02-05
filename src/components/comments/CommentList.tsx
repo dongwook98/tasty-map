@@ -1,13 +1,19 @@
-import { CommentApiResponse } from '@/interface';
+import Link from 'next/link';
 import axios from 'axios';
-import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
+import { useSession } from 'next-auth/react';
+
+import { CommentApiResponse } from '@/interface';
 
 interface CommentListProps {
   comments?: CommentApiResponse;
+  displayStore?: boolean;
 }
 
-export default function CommentList({ comments }: CommentListProps) {
+export default function CommentList({
+  comments,
+  displayStore,
+}: CommentListProps) {
   const { data: session } = useSession();
 
   const handleDeleteComment = async (id: number) => {
@@ -16,7 +22,6 @@ export default function CommentList({ comments }: CommentListProps) {
     if (confirm) {
       try {
         const result = await axios.delete(`/api/comments?id=${id}`);
-
         if (result.status === 200) {
           toast.success('해당 댓글을 삭제했습니다.');
         } else {
@@ -52,6 +57,16 @@ export default function CommentList({ comments }: CommentListProps) {
                 {new Date(comment.createdAt).toLocaleDateString()}
               </div>
               <div className='text-black mt-1 text-base'>{comment.body}</div>
+              {displayStore && (
+                <div className='mt-2'>
+                  <Link
+                    href={`/stores/${comment.storeId}`}
+                    className='text-blue-700 hover:text-blue-600 underline font-medium'
+                  >
+                    {comment.store?.name}
+                  </Link>
+                </div>
+              )}
             </div>
             <div>
               {comment.userId === session?.user.id && (

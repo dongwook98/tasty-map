@@ -1,13 +1,13 @@
 import Link from 'next/link';
 
 interface PaginationProps {
-  totalPageCount?: number;
+  totalPageCount: number;
   currentPage: string;
   pathname: string;
 }
 
 export default function Pagination({
-  totalPageCount = 0,
+  totalPageCount,
   currentPage,
   pathname,
 }: PaginationProps) {

@@ -9,6 +9,7 @@ interface RequestQueryType {
   page?: string;
   limit?: string;
   storeId?: string;
+  user?: boolean;
 }
 
 export default async function handler(
@@ -54,12 +55,14 @@ export default async function handler(
       page = '1',
       limit = '10',
       storeId = '',
+      user = false,
     }: RequestQueryType = req.query;
 
     const skipPage = parseInt(page) - 1;
     const count = await prisma.comment?.count({
       where: {
         storeId: storeId ? parseInt(storeId) : {},
+        userId: user ? session?.user.id : {},
       },
     });
 
@@ -67,11 +70,13 @@ export default async function handler(
       orderBy: { createdAt: 'desc' },
       where: {
         storeId: storeId ? parseInt(storeId) : {},
+        userId: user ? session?.user.id : {}, // user 쿼리 파라미터 값이 true면 현재 로그인한 유저의 댓글 가져오기
       },
       skip: skipPage * parseInt(limit),
       take: parseInt(limit),
       include: {
         user: true,
+        store: true,
       },
     });
 

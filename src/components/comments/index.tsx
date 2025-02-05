@@ -35,16 +35,13 @@ export default function Comments({ storeId }: CommentProps) {
 
   return (
     <div className='md:max-w-2xl py-8 px-2 mb-20 mx-auto'>
-      {/* comment form */}
       {status === 'authenticated' && (
         <CommentForm storeId={storeId} refetch={refetch} />
       )}
-      {/* comment list */}
       <CommentList comments={comments} />
-      {/* pagination */}
       <Pagination
         currentPage={page as string}
-        totalPageCount={comments?.totalPage}
+        totalPageCount={comments?.totalPage as number}
         pathname={`/stores/${storeId}`}
       />
     </div>

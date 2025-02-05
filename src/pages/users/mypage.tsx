@@ -1,7 +1,29 @@
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import { signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+
+import CommentList from '@/components/comments/CommentList';
+import Pagination from '@/components/Pagination';
+import { CommentApiResponse } from '@/interface';
 
 export default function MyPage() {
+  const { page = '1' } = useRouter().query;
   const { data: session } = useSession();
+
+  const fetchComments = async () => {
+    const result = await axios(
+      `/api/comments?limit=5&page=${page}&user=${true}`
+    );
+
+    return result.data as CommentApiResponse;
+  };
+
+  const { data: comments } = useQuery({
+    queryKey: [`comments-${page}`],
+    queryFn: fetchComments,
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <div className='md:max-w-5xl mx-auto px-4 py-8'>
@@ -70,12 +92,12 @@ export default function MyPage() {
           댓글 리스트
         </p>
       </div>
-      {/* <CommentList comments={comments} displayStore={true} /> */}
-      {/* <Pagination
-        total={comments?.totalPage}
-        page={page}
+      <CommentList comments={comments} displayStore={true} />
+      <Pagination
+        totalPageCount={comments?.totalPage as number}
+        currentPage={page as string}
         pathname='/users/mypage'
-      /> */}
+      />
     </div>
   );
 }
