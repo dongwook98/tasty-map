@@ -6,7 +6,8 @@ const DEFAULT_LAT = '37.497625203';
 const DEFAULT_LNG = '127.03088379';
 const DEFAULT_ZOOM = 3;
 
-export const mapState = atom({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const mapState = atom<any>({
   key: 'map',
   default: null,
   dangerouslyAllowMutability: true,
