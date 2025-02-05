@@ -21,6 +21,7 @@ export default function LikesPage() {
     data: likes,
     isLoading,
     isError,
+    isSuccess,
   } = useQuery<LikeApiResponse>({
     queryKey: [`likes-${page}`],
     queryFn: fetchLikes,
@@ -48,14 +49,18 @@ export default function LikesPage() {
             </Link>
           ))
         )}
+        {isSuccess && !!!likes.data.length && (
+          <div className='p-4 border border-gray-200 rounded-md text-sm text-gray-400'>
+            찜한 가게가 없습니다.
+          </div>
+        )}
       </ul>
-      {likes?.totalPage && likes?.totalPage > 0 && (
-        <Pagination
-          totalPageCount={likes.totalPage}
-          currentPage={page as string}
-          pathname='/users/likes'
-        />
-      )}
+
+      <Pagination
+        totalPageCount={likes?.totalPage}
+        currentPage={page as string}
+        pathname='/users/likes'
+      />
     </div>
   );
 }

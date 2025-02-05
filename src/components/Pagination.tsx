@@ -1,13 +1,13 @@
 import Link from 'next/link';
 
 interface PaginationProps {
-  totalPageCount: number;
+  totalPageCount?: number;
   currentPage: string;
   pathname: string;
 }
 
 export default function Pagination({
-  totalPageCount,
+  totalPageCount = 0,
   currentPage,
   pathname,
 }: PaginationProps) {
@@ -21,7 +21,7 @@ export default function Pagination({
           >
             <span
               className={`px-3 py-2 rounded border shadow-md bg-white ${
-                index + 1 === parseInt(currentPage)
+                index + 1 === parseInt(currentPage, 10)
                   ? 'text-blue-600 font-bold'
                   : 'text-gray-300'
               }`}
