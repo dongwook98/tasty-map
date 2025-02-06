@@ -1,5 +1,7 @@
+'use client';
+
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
@@ -11,9 +13,13 @@ import Marker from '@/components/Marker';
 import Like from '@/components/Like';
 import Comments from '@/components/comments';
 
-export default function StoreDetailPage() {
+export default function StoreDetailPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const router = useRouter();
-  const { id } = router.query;
+  const id = params.id;
   const { status } = useSession();
 
   const {

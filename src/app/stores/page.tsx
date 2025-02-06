@@ -1,3 +1,5 @@
+'use client';
+
 import { Fragment, useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useInfiniteQuery } from '@tanstack/react-query';

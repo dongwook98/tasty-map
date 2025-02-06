@@ -1,6 +1,7 @@
+'use client';
+
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import axios from 'axios';
 
 import ListLoading from '@/components/ListLoading';
@@ -8,9 +9,8 @@ import StoreItem from '@/components/StoreItem';
 import { LikeApiResponse, LikeInterface } from '@/interface';
 import Pagination from '@/components/Pagination';
 
-export default function LikesPage() {
-  const router = useRouter();
-  const { page = '1' } = router.query;
+export default function LikesPage({ params }: { params: { page: string } }) {
+  const page = params.page || '1';
 
   const fetchLikes = async () => {
     const { data } = await axios(`/api/likes?limit=10&page=${page}`);
@@ -55,9 +55,8 @@ export default function LikesPage() {
           </div>
         )}
       </ul>
-
       <Pagination
-        totalPageCount={likes?.totalPage}
+        totalPageCount={likes?.totalPage as number}
         currentPage={page as string}
         pathname='/users/likes'
       />

@@ -1,5 +1,4 @@
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 
@@ -10,10 +9,13 @@ import Pagination from '../Pagination';
 
 interface CommentProps {
   storeId: number;
+  params?: {
+    page?: string;
+  };
 }
 
-export default function Comments({ storeId }: CommentProps) {
-  const { page = '1' } = useRouter().query;
+export default function Comments({ storeId, params }: CommentProps) {
+  const page = params?.page || '1';
   const { status } = useSession();
 
   const fetchComments = async () => {
