@@ -18,20 +18,16 @@ export default async function HomePage() {
 }
 
 async function getAllStores() {
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/stores`,
-      {
-        cache: 'no-store',
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch data');
+  /**
+   * 배포 환경에서 try catch 사용하면 에러 발생
+   * 이유 - ssr을 사용하려면 next 내부에서 DynamicServerError를 잡아야하는데 try catch가 막아버림
+   */
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/stores`,
+    {
+      cache: 'no-store',
     }
+  );
 
-    return response.json();
-  } catch (error) {
-    console.error(error);
-  }
+  return response.json();
 }
