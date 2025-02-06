@@ -1,12 +1,14 @@
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { signIn, useSession } from 'next-auth/react';
 import { AiOutlineGoogle } from 'react-icons/ai';
 import { SiNaver } from 'react-icons/si';
 import { RiKakaoTalkFill } from 'react-icons/ri';
-import { signIn, useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 
 export default function LoginPage() {
-  const { status, data: session } = useSession();
+  const { status } = useSession();
   const router = useRouter();
 
   useEffect(() => {

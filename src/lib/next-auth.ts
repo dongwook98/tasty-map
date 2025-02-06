@@ -1,10 +1,9 @@
-import NextAuth, { NextAuthOptions } from 'next-auth';
+import { NextAuthOptions } from 'next-auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import GoogleProvider from 'next-auth/providers/google';
 import NaverProvider from 'next-auth/providers/naver';
 import KakaoProvier from 'next-auth/providers/kakao';
-
-import prisma from '@/lib/prisma';
+import prisma from './prisma';
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -46,5 +45,3 @@ export const authOptions: NextAuthOptions = {
     },
   },
 };
-
-export default NextAuth(authOptions);

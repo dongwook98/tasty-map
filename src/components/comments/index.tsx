@@ -1,5 +1,4 @@
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 
@@ -10,10 +9,10 @@ import Pagination from '../Pagination';
 
 interface CommentProps {
   storeId: number;
+  page: string;
 }
 
-export default function Comments({ storeId }: CommentProps) {
-  const { page = '1' } = useRouter().query;
+export default function Comments({ storeId, page = '1' }: CommentProps) {
   const { status } = useSession();
 
   const fetchComments = async () => {
@@ -30,8 +29,6 @@ export default function Comments({ storeId }: CommentProps) {
     enabled: !!storeId,
     refetchOnWindowFocus: false,
   });
-
-  console.log('🚀 ~ Comments ~ comments:', comments);
 
   return (
     <div className='md:max-w-2xl py-8 px-2 mb-20 mx-auto'>

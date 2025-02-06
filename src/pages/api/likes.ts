@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
-import { authOptions } from './auth/[...nextauth]';
+
+import { authOptions } from '@/lib/next-auth';
 import prisma from '@/lib/prisma';
 import { LikeInterface, LikeApiResponse } from '@/interface';
 
@@ -15,7 +16,7 @@ export default async function handler(
 ) {
   const session = await getServerSession(req, res, authOptions);
 
-  if (!session.user) {
+  if (!session?.user) {
     return res.status(401);
   }
 
@@ -26,7 +27,7 @@ export default async function handler(
     let like = await prisma.like.findFirst({
       where: {
         storeId,
-        userId: session.user.id,
+        userId: session?.user.id,
       },
     });
 
@@ -44,7 +45,7 @@ export default async function handler(
       like = await prisma.like.create({
         data: {
           storeId,
-          userId: session.user.id,
+          userId: session?.user.id,
         },
       });
       return res.status(201).json(like);
@@ -53,7 +54,7 @@ export default async function handler(
     // GET 요청 처리
     const count = await prisma.like.count({
       where: {
-        userId: session.user.id,
+        userId: session?.user.id,
       },
     });
 
@@ -62,7 +63,7 @@ export default async function handler(
     const likes = await prisma.like.findMany({
       orderBy: { createdAt: 'desc' },
       where: {
-        userId: session.user.id,
+        userId: session?.user.id,
       },
       include: {
         store: true,

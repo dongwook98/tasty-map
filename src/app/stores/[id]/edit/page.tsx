@@ -1,14 +1,20 @@
-import { useRouter } from 'next/router';
+'use client';
+
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import { CATEGORY_ARR, FOOD_CERTIFY_ARR, STORE_TYPE_ARR } from '@/data/store';
 import AddressSearch from '@/components/AddressSearch';
 import { StoreType } from '@/interface';
-import { createStore } from '@/apis/stores';
+import { useQuery } from '@tanstack/react-query';
+import { fetchStoreDetail, updateStore } from '@/apis/stores';
+import Loader from '@/components/Loader';
 
-export default function StoreNewPage() {
+export default function StoreEditPage({ params }: { params: { id: string } }) {
   const router = useRouter();
+  const id = params.id;
+
   const {
     register,
     handleSubmit,
@@ -16,12 +22,44 @@ export default function StoreNewPage() {
     formState: { errors },
   } = useForm<StoreType>();
 
+  const { isError, isFetching } = useQuery<StoreType>({
+    queryKey: [`store-${id}`],
+    queryFn: async () => {
+      const result = await fetchStoreDetail(parseInt(id));
+      setValue('id', result.id);
+      setValue('name', result.name);
+      setValue('category', result.category);
+      setValue('phone', result.phone);
+      setValue('address', result.address);
+      setValue('lat', result.lat);
+      setValue('lng', result.lng);
+      setValue('storeType', result.storeType);
+      setValue('foodCertifyName', result.foodCertifyName);
+      return result;
+    },
+    enabled: !!id,
+    refetchOnWindowFocus: false,
+  });
+
+  if (isError) {
+    return (
+      <div className='w-full h-screen mx-auto pt-[10%] text-red-500 text-center font-semibold'>
+        다시 시도해주세요
+      </div>
+    );
+  }
+
+  if (isFetching) {
+    return <Loader className='mt-[20%]' />;
+  }
+
   return (
     <form
       className='px-4 md:max-w-4xl mx-auto py-8'
       onSubmit={handleSubmit(async (data) => {
         try {
-          const result = await createStore(data);
+          const result = await updateStore(data);
+
           if (result.status === 200) {
             toast.success('맛집을 등록했습니다.');
             router.replace(`/stores/${result.data.id}`);
