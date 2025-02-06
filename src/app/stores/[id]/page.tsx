@@ -15,8 +15,10 @@ import Comments from '@/components/comments';
 
 export default function StoreDetailPage({
   params,
+  searchParams,
 }: {
   params: { id: string };
+  searchParams: { page?: string };
 }) {
   const router = useRouter();
   const id = params.id;
@@ -164,7 +166,7 @@ export default function StoreDetailPage({
             <Map lat={store?.lat} lng={store?.lng} zoom={1} />
             <Marker store={store} />
           </div>
-          <Comments storeId={store.id} />
+          <Comments storeId={store.id} searchParams={searchParams} />
         </>
       )}
     </>

@@ -9,13 +9,13 @@ import Pagination from '../Pagination';
 
 interface CommentProps {
   storeId: number;
-  params?: {
+  searchParams: {
     page?: string;
   };
 }
 
-export default function Comments({ storeId, params }: CommentProps) {
-  const page = params?.page || '1';
+export default function Comments({ storeId, searchParams }: CommentProps) {
+  const page = searchParams?.page || '1';
   const { status } = useSession();
 
   const fetchComments = async () => {

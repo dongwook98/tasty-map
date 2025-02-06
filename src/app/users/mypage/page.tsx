@@ -8,8 +8,12 @@ import CommentList from '@/components/comments/CommentList';
 import Pagination from '@/components/Pagination';
 import { CommentApiResponse } from '@/interface';
 
-export default function MyPage({ params }: { params: { page: string } }) {
-  const page = params.page || '1';
+export default function MyPage({
+  searchParams,
+}: {
+  searchParams: { page: string };
+}) {
+  const page = searchParams.page || '1';
   const { data: session } = useSession();
 
   const fetchComments = async () => {

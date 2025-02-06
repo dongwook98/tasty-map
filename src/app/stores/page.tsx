@@ -15,10 +15,10 @@ import StoreItem from '@/components/StoreItem';
 import SearchFilter from '@/components/SearchFilter';
 
 export default function StoreListPage() {
-  const search = useRecoilValue(searchState);
   const ref = useRef<HTMLDivElement>(null);
   const pageRef = useIntersectionObserver(ref, {});
   const isPageEnd = pageRef?.isIntersecting;
+  const search = useRecoilValue(searchState);
 
   const searchParams = {
     q: search?.q,
