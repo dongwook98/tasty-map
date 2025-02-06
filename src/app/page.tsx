@@ -18,16 +18,20 @@ export default async function HomePage() {
 }
 
 async function getAllStores() {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/stores`,
-    {
-      cache: 'no-store',
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/stores`,
+      {
+        cache: 'no-store',
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
     }
-  );
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch data');
+    return response.json();
+  } catch (error) {
+    console.error(error);
   }
-
-  return response.json();
 }

@@ -9,13 +9,10 @@ import Pagination from '../Pagination';
 
 interface CommentProps {
   storeId: number;
-  searchParams: {
-    page?: string;
-  };
+  page: string;
 }
 
-export default function Comments({ storeId, searchParams }: CommentProps) {
-  const page = searchParams?.page || '1';
+export default function Comments({ storeId, page = '1' }: CommentProps) {
   const { status } = useSession();
 
   const fetchComments = async () => {
@@ -32,8 +29,6 @@ export default function Comments({ storeId, searchParams }: CommentProps) {
     enabled: !!storeId,
     refetchOnWindowFocus: false,
   });
-
-  console.log('🚀 ~ Comments ~ comments:', comments);
 
   return (
     <div className='md:max-w-2xl py-8 px-2 mb-20 mx-auto'>
