@@ -1,9 +1,12 @@
-import { mapState } from '@/atom';
+'use client';
+
 import { useState } from 'react';
-import { MdOutlineMyLocation } from 'react-icons/md';
-import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
+import { toast } from 'react-toastify';
+import { MdOutlineMyLocation } from 'react-icons/md';
+
 import FullPageLoader from './FullPageLoader';
+import { mapState } from '@/atom';
 
 export default function CurrentLocationButton() {
   const map = useRecoilValue(mapState);
