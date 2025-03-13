@@ -27,6 +27,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   pages: {
+    // 커스텀 로그인 페이지 설정
     signIn: '/users/login',
   },
   callbacks: {
