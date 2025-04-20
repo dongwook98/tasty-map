@@ -8,12 +8,23 @@ export default async function HomePage() {
   const stores: StoreType[] = await getAllStores();
 
   return (
-    <>
+    <div className='relative h-[calc(100vh-52px)]'>
       <Map />
       <Markers stores={stores} />
       <StoreBox />
       <CurrentLocationButton />
-    </>
+
+      <div className='absolute top-4 left-4 right-4 z-10'>
+        <div className='bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-lg max-w-md mx-auto'>
+          <h1 className='text-xl font-bold text-primary-700 text-center'>
+            맛집 지도
+          </h1>
+          <p className='text-sm text-neutral-700 text-center mt-1'>
+            지도에서 맛집을 찾아보세요!
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
 

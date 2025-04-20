@@ -11,6 +11,7 @@ import { mapState } from '@/atom';
 export default function CurrentLocationButton() {
   const map = useRecoilValue(mapState);
   const [loading, setLoading] = useState(false);
+  
   const handleCurrentPosition = () => {
     setLoading(true);
 
@@ -44,15 +45,17 @@ export default function CurrentLocationButton() {
       );
     }
   };
+  
   return (
     <>
       {loading && <FullPageLoader />}
       <button
         type='button'
         onClick={handleCurrentPosition}
-        className='fixed z-10 p-3 shadow right-10 bottom-20 bg-blue-100 rounded-md hover:shadow-lg focus:shadow-lg hover:bg-blue-200'
+        className='fixed z-10 p-3 shadow-button right-6 bottom-28 bg-white rounded-full hover:bg-primary-50 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200'
+        aria-label="현재 위치로 이동"
       >
-        <MdOutlineMyLocation className='w-5 h-5' />
+        <MdOutlineMyLocation className='w-5 h-5 text-primary-600' />
       </button>
     </>
   );

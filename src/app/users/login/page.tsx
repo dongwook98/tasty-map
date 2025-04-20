@@ -18,43 +18,44 @@ export default function LoginPage() {
   }, [router, status]);
 
   return (
-    <div className='flex flex-col justify-center px-6 lg:px-8 h-[60vh]'>
-      <div className='mx-auto w-full max-w-sm'>
-        <h1 className='text-blue-800 text-center text-2xl font-semibold italic'>
-          Tasty Map
-        </h1>
-        <p className='text-center mt-6 text-2xl font-bold text-gray-600'>
-          SNS 계정으로 로그인해주세요.
-        </p>
-        <p className='mt-2 text-center text-sm text-gray-600'>
-          계정이 없다면 자동으로 회원가입이 진행됩니다.
-        </p>
-      </div>
-      <div className='mt-10 mx-auto w-full max-w-sm'>
-        <div className='flex flex-col gap-3'>
+    <div className='flex flex-col justify-center px-6 lg:px-8 min-h-[calc(100vh-52px)]'>
+      <div className='mx-auto w-full max-w-md'>
+        <div className="text-center">
+          <h1 className='text-primary-600 text-3xl font-bold mb-2'>맛집지도</h1>
+          <p className='text-xl font-semibold text-neutral-800 mt-6'>
+            SNS 계정으로 로그인해주세요
+          </p>
+          <p className='mt-2 text-sm text-neutral-600'>
+            계정이 없다면 자동으로 회원가입이 진행됩니다
+          </p>
+        </div>
+        
+        <div className='mt-10 space-y-4'>
           <button
             type='button'
             onClick={() => signIn('google', { callbackUrl: '/' })}
-            className='text-white flex gap-4 bg-[#4285F4] hover:bg-[#4285F4]/90 font-medium rounded-lg w-full px-5 py-4 text-center items-center justify-center'
+            className='flex w-full items-center justify-center gap-3 rounded-lg bg-white px-4 py-3 text-neutral-900 shadow-sm ring-1 ring-neutral-200 hover:bg-neutral-50 transition-colors'
           >
-            <AiOutlineGoogle className='w-6 h-6' />
-            Sign in with Google
+            <AiOutlineGoogle className='w-5 h-5 text-[#4285F4]' />
+            <span className="text-sm font-medium">Google로 계속하기</span>
           </button>
+          
           <button
             type='button'
             onClick={() => signIn('naver', { callbackUrl: '/' })}
-            className='text-white flex gap-3 bg-[#2db400] hover:bg-[#2db400]/90 font-medium rounded-lg w-full px-5 py-4 text-center items-center justify-center'
+            className='flex w-full items-center justify-center gap-3 rounded-lg bg-[#03C75A] px-4 py-3 text-white hover:bg-[#02b350] transition-colors'
           >
             <SiNaver className='w-4 h-4' />
-            Sign in with Naver
+            <span className="text-sm font-medium">네이버로 계속하기</span>
           </button>
+          
           <button
             type='button'
             onClick={() => signIn('kakao', { callbackUrl: '/' })}
-            className='text-black flex gap-4 bg-[#fef01b] hover:bg-[#fef01b]/90 font-medium rounded-lg w-full px-5 py-4 text-center items-center justify-center'
+            className='flex w-full items-center justify-center gap-3 rounded-lg bg-[#FEE500] px-4 py-3 text-neutral-900 hover:bg-[#fdd800] transition-colors'
           >
-            <RiKakaoTalkFill className='w-6 h-6' />
-            Sign in with Kakao
+            <RiKakaoTalkFill className='w-5 h-5' />
+            <span className="text-sm font-medium">카카오로 계속하기</span>
           </button>
         </div>
       </div>

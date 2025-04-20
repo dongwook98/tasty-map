@@ -21,61 +21,71 @@ export default function StoreBox() {
   const [store, setStore] = useRecoilState(currentStoreState);
   const router = useRouter();
 
+  if (!store) return null;
+
   return (
-    <div className='fixed transition ease-in-out delay-150 inset-x-0 mx-auto bottom-20 rounded-lg shadow-lg max-w-sm md:max-w-xl z-10 w-full bg-white'>
-      {store && (
-        <>
-          <div className='p-8'>
-            <div className='flex justify-between items-start'>
-              <div className='flex gap-4 items-center'>
-                <Image
-                  src={
-                    store?.category
-                      ? `/images/markers/${store?.category}.png`
-                      : '/images/markers/default.png'
-                  }
-                  width={40}
-                  height={40}
-                  alt='아이콘 이미지'
-                />
-                <div>
-                  <div className='font-semibold'>{store?.name}</div>
-                  <div className='text-sm'>{store?.storeType}</div>
-                </div>
-              </div>
-              <button type='button' onClick={() => setStore(null)}>
-                <AiOutlineClose />
-              </button>
+    <div className='fixed transition-all duration-300 ease-in-out inset-x-0 mx-auto bottom-20 rounded-xl shadow-lg max-w-sm md:max-w-xl z-10 w-full bg-white overflow-hidden'>
+      <div className='p-6'>
+        <div className='flex justify-between items-start'>
+          <div className='flex gap-4 items-center'>
+            <div className='bg-primary-100 p-2 rounded-lg'>
+              <Image
+                src={
+                  store?.category
+                    ? `/images/markers/${store?.category}.png`
+                    : '/images/markers/default.png'
+                }
+                width={36}
+                height={36}
+                alt='아이콘 이미지'
+                className='object-contain'
+              />
             </div>
-            <div className='flex justify-between gap-4'>
-              <div className='mt-4 flex gap-2 items-center col-span-3'>
-                <HiOutlineMapPin />
-                {store?.address}
-              </div>
-              <Like storeId={store.id} />
-            </div>
-            <div className='mt-2 flex gap-2 items-center'>
-              <AiOutlinePhone />
-              {store?.phone}
-            </div>
-            <div className='mt-2 flex gap-2 items-center'>
-              <AiOutlineInfoCircle />
-              {store?.storeType}
-            </div>
-            <div className='mt-2 flex gap-2 items-center'>
-              <AiOutlineCheck />
-              {store?.category}
+            <div>
+              <div className='font-bold text-lg text-neutral-900'>{store?.name}</div>
+              <div className='text-sm text-neutral-600'>{store?.storeType}</div>
             </div>
           </div>
-          <button
-            type='button'
-            onClick={() => router.push(`/stores/${store.id}`)}
-            className='w-full bg-blue-700 hover:bg-blue-500 focus:bg-blue-500 py-3 text-white font-semibold rounded-b-lg'
+          <button 
+            type='button' 
+            onClick={() => setStore(null)}
+            className='text-neutral-500 hover:text-neutral-700 p-1 rounded-full hover:bg-neutral-100 transition-colors'
           >
-            상세보기
+            <AiOutlineClose className='w-5 h-5' />
           </button>
-        </>
-      )}
+        </div>
+        
+        <div className='mt-4 space-y-2'>
+          <div className='flex items-start gap-3'>
+            <HiOutlineMapPin className='w-5 h-5 text-neutral-500 mt-0.5' />
+            <span className='text-neutral-700 text-sm flex-1'>{store?.address}</span>
+            <Like storeId={store.id} />
+          </div>
+          
+          <div className='flex gap-3 items-center'>
+            <AiOutlinePhone className='w-5 h-5 text-neutral-500' />
+            <span className='text-neutral-700 text-sm'>{store?.phone}</span>
+          </div>
+          
+          <div className='flex gap-3 items-center'>
+            <AiOutlineInfoCircle className='w-5 h-5 text-neutral-500' />
+            <span className='text-neutral-700 text-sm'>{store?.storeType}</span>
+          </div>
+          
+          <div className='flex gap-3 items-center'>
+            <AiOutlineCheck className='w-5 h-5 text-neutral-500' />
+            <span className='text-neutral-700 text-sm'>{store?.category}</span>
+          </div>
+        </div>
+      </div>
+      
+      <button
+        type='button'
+        onClick={() => router.push(`/stores/${store.id}`)}
+        className='w-full bg-primary-600 hover:bg-primary-700 py-3 text-white font-semibold transition-colors'
+      >
+        상세보기
+      </button>
     </div>
   );
 }

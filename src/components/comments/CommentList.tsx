@@ -2,6 +2,9 @@ import Link from 'next/link';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useSession } from 'next-auth/react';
+import { format } from 'date-fns';
+import { ko } from 'date-fns/locale';
+import { HiOutlineTrash } from 'react-icons/hi2';
 
 import { CommentApiResponse } from '@/interface';
 
@@ -34,57 +37,52 @@ export default function CommentList({
   };
 
   return (
-    <div className='my-10'>
+    <div className='mt-8'>
+      <h2 className='text-xl font-bold text-neutral-900 mb-4'>리뷰</h2>
       {comments?.data && comments?.data.length > 0 ? (
-        comments.data.map((comment) => (
-          <div
-            key={comment.id}
-            className='flex items-center space-x-4 text-sm text-gray-500 mb-8 border-b border-gray-100 pb-8'
-          >
-            <div>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={comment.user?.image || '/images/markers/default.png'}
-                width={40}
-                height={40}
-                className='rounded-full bg-gray-100 h-10 w-10'
-                alt='profile image'
-              />
-            </div>
-            <div className='flex flex-col space-y-1 flex-1'>
-              <div>{comment.user?.email}</div>
-              <div className='text-sm'>
-                {new Date(comment.createdAt).toLocaleDateString()}
-              </div>
-              <div className='text-black mt-1 text-base'>{comment.body}</div>
-              {displayStore && (
-                <div className='mt-2'>
-                  <Link
-                    href={`/stores/${comment.storeId}`}
-                    className='text-blue-700 hover:text-blue-600 underline font-medium'
-                  >
-                    {comment.store?.name}
-                  </Link>
+        <ul className='space-y-6'>
+          {comments?.data.map((comment) => (
+            <li key={comment.id} className='border-b border-neutral-200 pb-6'>
+              <div className='flex justify-between items-start'>
+                <div>
+                  <div className='flex items-center gap-2'>
+                    <p className='font-medium text-neutral-900'>
+                      {comment.user?.name || '사용자'}
+                    </p>
+                    <p className='text-xs text-neutral-500'>
+                      {format(new Date(comment.createdAt), 'PPP', { locale: ko })}
+                    </p>
+                  </div>
+                  {displayStore && comment.store && (
+                    <Link
+                      href={`/stores/${comment.store.id}`}
+                      className='text-sm text-primary-600 hover:underline mt-1 inline-block'
+                    >
+                      {comment.store.name}
+                    </Link>
+                  )}
+                  <p className='mt-2 text-neutral-700 whitespace-pre-line'>
+                    {comment.body}
+                  </p>
                 </div>
-              )}
-            </div>
-            <div>
-              {comment.userId === session?.user.id && (
-                <button
-                  type='button'
-                  className='underline text-gray-500 hover:text-gray-400'
-                  onClick={() => handleDeleteComment(comment.id)}
-                >
-                  삭제
-                </button>
-              )}
-            </div>
-          </div>
-        ))
+                
+                {session?.user?.id === comment.userId && (
+                  <button
+                    type='button'
+                    onClick={() => handleDeleteComment(comment.id)}
+                    className='text-neutral-500 hover:text-red-500 p-1 rounded-full hover:bg-neutral-100 transition-colors'
+                  >
+                    <HiOutlineTrash className='w-5 h-5' />
+                  </button>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
       ) : (
-        <div className='p-4 border border-gray-200 rounded-md text-sm text-gray-400'>
-          댓글이 없습니다.
-        </div>
+        <p className='text-center py-10 text-neutral-500'>
+          아직 리뷰가 없습니다. 첫 리뷰를 작성해보세요!
+        </p>
       )}
     </div>
   );

@@ -18,36 +18,48 @@ export default function CommentForm({ storeId, refetch }: CommentFormProps) {
   return (
     <form
       onSubmit={handleSubmit(async (data) => {
-        const result = await axios.post('/api/comments', {
-          ...data,
-          storeId,
-        });
+        try {
+          const result = await axios.post('/api/comments', {
+            storeId,
+            body: data.body,
+          });
 
-        if (result.status === 200) {
-          toast.success('댓글을 등록했습니다.');
-          resetField('body');
-          refetch?.();
-        } else {
-          toast.error('다시 시도해주세요.');
+          if (result.status === 200) {
+            toast.success('댓글이 등록되었습니다.');
+            resetField('body');
+            refetch();
+          } else {
+            toast.error('다시 시도해주세요.');
+          }
+        } catch (error) {
+          console.error(error);
         }
       })}
-      className='flex flex-col space-y-2'
+      className='mt-8'
     >
-      {errors.body?.type === 'required' && (
-        <div className='text-xs text-red-600'>필수 입력사항입니다.</div>
-      )}
-      <textarea
-        rows={3}
-        placeholder='댓글을 작성해주세요.'
-        {...register('body', { required: true })}
-        className='block w-full min-h-[120px] resize-none border rounded-md bg-transparent py-2.5 px-4 text-black placeholder:text-gray-400 text-sm leading-6'
-      />
-      <button
-        type='submit'
-        className='bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 text-sm font-semibold shadow-sm mt-2 rounded-md'
-      >
-        작성하기
-      </button>
+      <div className='flex flex-col space-y-2'>
+        <label htmlFor='body' className='text-sm font-medium text-neutral-700'>
+          리뷰 작성
+        </label>
+        <textarea
+          id='body'
+          rows={3}
+          {...register('body', { required: true })}
+          className='block w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500 resize-none'
+          placeholder='이 맛집에 대한 리뷰를 남겨주세요'
+        />
+        {errors.body && (
+          <p className='text-red-500 text-xs'>리뷰 내용을 입력해주세요.</p>
+        )}
+      </div>
+      <div className='mt-4 flex justify-end'>
+        <button
+          type='submit'
+          className='btn btn-primary px-4 py-2 text-sm'
+        >
+          등록하기
+        </button>
+      </div>
     </form>
   );
 }

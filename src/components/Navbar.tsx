@@ -1,126 +1,104 @@
-import { useState } from 'react';
-import Link from 'next/link';
-import { useSession, signOut } from 'next-auth/react';
-import { BiMenu } from 'react-icons/bi';
-import { AiOutlineClose } from 'react-icons/ai';
+'use client';
 
-/**
- * 모든 페이지에 최상단에 위치하는 Navigation 컴포넌트
- */
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import {
+  MdOutlineRestaurantMenu,
+  MdOutlineMap,
+  MdOutlinePerson,
+} from 'react-icons/md';
+import { AiOutlineHeart } from 'react-icons/ai';
+
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
   const { status } = useSession();
 
   return (
-    <>
-      <div className='flex justify-between items-center fixed w-full h-[52px] top-0 shadow-sm bg-white z-[100]'>
-        <Link
-          className='text-blue-800 text-lg font-semibold cursor-pointer px-[18px] py-0'
-          href='/'
-        >
-          Tasty map
-        </Link>
-        <div className='hidden md:flex gap-3 items-center px-[18px] py-0'>
-          <Link href='/stores' className='cursor-pointer hover:text-gray-600'>
-            맛집 목록
-          </Link>
-          <Link
-            href='/stores/new'
-            className='cursor-pointer hover:text-gray-600'
-          >
-            맛집 등록
-          </Link>
-          <Link
-            href='/users/likes'
-            className='cursor-pointer hover:text-gray-600'
-          >
-            찜한 가게
-          </Link>
-          <Link
-            href='/users/mypage'
-            className='cursor-pointer hover:text-gray-600'
-          >
-            마이페이지
-          </Link>
-          {status === 'authenticated' ? (
-            <button type='button' onClick={() => signOut()}>
-              로그아웃
-            </button>
-          ) : (
-            <Link
-              href='/api/auth/signin'
-              className='cursor-pointer hover:text-gray-600'
-            >
-              로그인
+    <div className='fixed top-0 left-0 w-full z-50 bg-white shadow-md'>
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+        <div className='flex justify-between h-14'>
+          <div className='flex'>
+            <Link href='/' className='flex items-center'>
+              <span className='text-primary-600 font-bold text-xl'>
+                맛집지도
+              </span>
             </Link>
-          )}
-        </div>
+          </div>
 
-        {/* mobile button */}
-        <div
-          role='presentation'
-          className='block px-[18px] py-0 md:hidden cursor-pointer'
-          onClick={() => setIsOpen((val) => !val)}
-        >
-          {isOpen ? <AiOutlineClose /> : <BiMenu />}
-        </div>
-      </div>
+          <div className='flex items-center space-x-1 md:space-x-4'>
+            <Link
+              href='/'
+              className={`flex flex-col items-center p-2 rounded-lg transition-colors ${
+                pathname === '/'
+                  ? 'text-primary-600'
+                  : 'text-neutral-500 hover:text-primary-600 hover:bg-neutral-50'
+              }`}
+            >
+              <MdOutlineMap className='h-5 w-5' />
+              <span className='text-xs mt-1'>지도</span>
+            </Link>
 
-      {/* mobile navbar */}
-      {isOpen && (
-        <div className='fixed w-full text-white h-screen top-[52px] bg-blue-800 z-[100]'>
-          <div className='flex flex-col gap-4 px-[18px] py-6'>
             <Link
               href='/stores'
-              className='cursor-pointer hover:text-gray-600'
-              onClick={() => setIsOpen(false)}
+              className={`flex flex-col items-center p-2 rounded-lg transition-colors ${
+                pathname === '/stores'
+                  ? 'text-primary-600'
+                  : 'text-neutral-500 hover:text-primary-600 hover:bg-neutral-50'
+              }`}
             >
-              맛집 목록
+              <MdOutlineRestaurantMenu className='h-5 w-5' />
+              <span className='text-xs mt-1'>맛집목록</span>
             </Link>
-            <Link
-              href='/stores/new'
-              className='cursor-pointer hover:text-gray-600'
-              onClick={() => setIsOpen(false)}
-            >
-              맛집 등록
-            </Link>
-            <Link
-              href='/users/likes'
-              className='cursor-pointer hover:text-gray-600'
-              onClick={() => setIsOpen(false)}
-            >
-              찜한 가게
-            </Link>
-            <Link
-              href='/users/mypage'
-              className='cursor-pointer hover:text-gray-600'
-              onClick={() => setIsOpen(false)}
-            >
-              마이페이지
-            </Link>
-            {status === 'authenticated' ? (
-              <button
-                type='button'
-                onClick={() => {
-                  signOut();
-                  setIsOpen(false);
-                }}
-                className='cursor-pointer hover:text-gray-600 text-left'
-              >
-                로그아웃
-              </button>
-            ) : (
-              <Link
-                href='/api/auth/signin'
-                className='cursor-pointer hover:text-gray-600'
-                onClick={() => setIsOpen(false)}
-              >
+
+            {status === 'authenticated' && (
+              <>
+                <Link
+                  href='/users/likes'
+                  className={`flex flex-col items-center p-2 rounded-lg transition-colors ${
+                    pathname === '/users/likes'
+                      ? 'text-primary-600'
+                      : 'text-neutral-500 hover:text-primary-600 hover:bg-neutral-50'
+                  }`}
+                >
+                  <AiOutlineHeart className='h-5 w-5' />
+                  <span className='text-xs mt-1'>찜목록</span>
+                </Link>
+
+                <Link
+                  href='/stores/new'
+                  className={`flex flex-col items-center p-2 rounded-lg transition-colors ${
+                    pathname === '/stores/new'
+                      ? 'text-primary-600'
+                      : 'text-neutral-500 hover:text-primary-600 hover:bg-neutral-50'
+                  }`}
+                >
+                  <MdOutlineRestaurantMenu className='h-5 w-5' />
+                  <span className='text-xs mt-1'>맛집 등록</span>
+                </Link>
+
+                <Link
+                  href='/users/mypage'
+                  className={`flex flex-col items-center p-2 rounded-lg transition-colors ${
+                    pathname === '/users/mypage'
+                      ? 'text-primary-600'
+                      : 'text-neutral-500 hover:text-primary-600 hover:bg-neutral-50'
+                  }`}
+                >
+                  <MdOutlinePerson className='h-5 w-5' />
+                  <span className='text-xs mt-1'>내정보</span>
+                </Link>
+              </>
+            )}
+
+            {status === 'unauthenticated' && (
+              <Link href='/users/login' className='btn btn-primary text-sm'>
                 로그인
               </Link>
             )}
           </div>
         </div>
-      )}
-    </>
+      </div>
+    </div>
   );
 }

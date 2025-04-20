@@ -4,7 +4,7 @@ import { LocationType, SearchType, StoreType } from '@/interface';
 
 const DEFAULT_LAT = '37.497625203';
 const DEFAULT_LNG = '127.03088379';
-const DEFAULT_ZOOM = 3;
+const DEFAULT_ZOOM = 7;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const mapState = atom<any>({

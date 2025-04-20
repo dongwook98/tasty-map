@@ -20,6 +20,8 @@ export default function Markers({ stores }: MarkersProps) {
 
   const loadKakaoMarkers = useCallback(() => {
     if (map) {
+      const markers: string[] = [];
+
       // 식당 데이터 마커들 띄우기
       stores?.map((store) => {
         // 커스텀 마커 이미지 주소 설정
@@ -27,30 +29,28 @@ export default function Markers({ stores }: MarkersProps) {
           ? `/images/markers/${store?.category}.png`
           : '/images/markers/default.png';
 
-        // 커스텀 마커 이미지 크기 설정
+        // 마커 이미지 설정
         const imageSize = new window.kakao.maps.Size(40, 40);
-
-        // 마커이미지의 옵션, 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정
         const imageOption = { offset: new window.kakao.maps.Point(27, 69) };
-
-        // 마커의 이미지정보를 가지고 있는 마커이미지를 생성
         const markerImage = new window.kakao.maps.MarkerImage(
           imageSrc,
           imageSize,
           imageOption
         );
 
-        // 마커가 표시될 위치 설정
+        // 마커 위치 설정
         const markerPosition = new window.kakao.maps.LatLng(
           store?.lat,
           store?.lng
         );
 
-        // 마커를 생성
+        // 마커 생성
         const marker = new window.kakao.maps.Marker({
           position: markerPosition,
           image: markerImage, // 마커이미지 설정
         });
+
+        markers.push(marker);
 
         // 마커가 지도 위에 표시되도록 설정
         marker.setMap(map);
@@ -84,6 +84,16 @@ export default function Markers({ stores }: MarkersProps) {
           setLocation({ ...location, lat: store.lat, lng: store.lng });
         });
       });
+
+      // 클러스터러 생성
+      const clusterer = new window.kakao.maps.MarkerClusterer({
+        map: map, // 클러스터를 적용할 지도
+        averageCenter: true, // 클러스터의 중심을 평균값으로 설정
+        minLevel: 7, // 줌 레벨 7 이하에서 클러스터링 적용
+      });
+
+      // 클러스터러에 마커 추가
+      clusterer.addMarkers(markers);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map, stores]);

@@ -6,15 +6,23 @@
 
 ## 아키텍처
 
-graph TD;
-A[Next.js Application] --> B[Next-auth Authentication]
-A --> C[React Query for Data Fetching]
-A --> D[Zustand for State Management]
-A --> E[TypeScript for Type Safety]
-A --> F[Vercel Deployment]
-F --> A
-G[Supabase Database] --> C
-G --> B
+```mermaid
+graph TD
+    A[사용자] --> B[프론트엔드 (Next.js)]
+    B --> C[React Query]
+    B --> D[Axios]
+    D --> E[백엔드 (Next.js Route Handlers)]
+    E --> F[Supabase DB]
+    B --> G[NextAuth]
+    G --> H[인증 서비스]
+    H --> F
+
+    A --> |요청| B
+    B --> |API 요청| C
+    C --> |서버에서 응답| D
+    D --> |데이터 처리| E
+    E --> |데이터 저장/조회| F
+```
 
 ## 기능
 
