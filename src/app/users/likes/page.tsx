@@ -6,7 +6,7 @@ import axios from 'axios';
 
 import ListLoading from '@/components/ListLoading';
 import StoreItem from '@/components/StoreItem';
-import { LikeApiResponse, LikeInterface } from '@/interface';
+import { LikeApiResponse, LikeInterface, StoreType } from '@/interface';
 import Pagination from '@/components/Pagination';
 
 export default function LikesPage({
@@ -49,7 +49,7 @@ export default function LikesPage({
         ) : (
           likes?.data.map((like: LikeInterface, index) => (
             <Link href={`/stores/${like.storeId}`} key={index}>
-              <StoreItem store={like.store} />
+              <StoreItem store={like.store as StoreType} />
             </Link>
           ))
         )}
